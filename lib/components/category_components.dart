@@ -22,7 +22,7 @@ List<String> categoryImages = [
   "assets/images/withdraw.png",
   "assets/images/other.png",
 ];
-GlobalKey<FormState> formKey = GlobalKey<FormState>();
+GlobalKey<FormState> categoryKey = GlobalKey<FormState>();
 TextEditingController categoryNameController = TextEditingController();
 
 class CategoryComponents extends StatelessWidget {
@@ -34,7 +34,7 @@ class CategoryComponents extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Form(
-        key: formKey,
+        key: categoryKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -125,7 +125,7 @@ class CategoryComponents extends StatelessWidget {
               children: [
                 FloatingActionButton.extended(
                   onPressed: () async {
-                    if (formKey.currentState!.validate() &&
+                    if (categoryKey.currentState!.validate() &&
                         controller.categoryIndex != null) {
                       String name = categoryNameController.text;
 
