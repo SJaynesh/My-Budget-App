@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/spending_model.dart';
+
 class DBHelper {
   // Private Named Constructor
   DBHelper._();
@@ -14,10 +16,20 @@ class DBHelper {
 
   Database? db;
 
+  // Category Table Attributes
   String categoryTable = "category";
   String categoryName = "category_name";
   String categoryImage = "category_image";
   String categoryImageIndex = "category_image_index";
+
+  // Spending Table Attributes
+  String spendingTable = "spending";
+  String spendingId = "spending_id";
+  String spendingDesc = "spending_desc";
+  String spendingAmount = "spending_amount";
+  String spendingMode = "spending_mode";
+  String spendingDate = "spending_date";
+  String spendingCategoryId = "spending_category_id";
 
   // TODO: Create a DATABASE
   Future<void> initDB() async {
@@ -47,6 +59,17 @@ class DBHelper {
             logger.e("$categoryTable table is not creation...", error: error);
           },
         );
+
+        String query2 = '''CREATE TABLE $spendingTable (
+          $spendingId INTEGER PRIMARY KEY AUTOINCREMENT,
+          $spendingDesc TEXT NOT NULL,
+          $spendingAmount NUMERIC NOT NULL,
+          $spendingMode TEXT NOT NULL,
+          $spendingDate TEXT NOT NULL,
+          $spendingCategoryId INTEGER NOT NULL
+        );''';
+
+        await db.execute(query2);
       },
     );
   }
@@ -69,6 +92,23 @@ class DBHelper {
     List arg = [name, image, index];
 
     return await db?.rawInsert(query, arg);
+  }
+
+  Future<int?> insertSpending({required SpendingModel model}) async {
+    await initDB();
+
+    String query =
+        "INSERT INTO $spendingTable ($spendingDesc,$spendingAmount,$spendingMode,$spendingDate,$spendingCategoryId) VALUES(?, ?, ?, ?, ?);";
+
+    List args = [
+      model.desc,
+      model.amount,
+      model.mode,
+      model.date,
+      model.categoryId,
+    ];
+
+    return await db?.rawInsert(query, args);
   }
 
   // TODO: FETCH ALL RECORDS
