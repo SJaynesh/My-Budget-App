@@ -126,6 +126,34 @@ class DBHelper {
         .toList();
   }
 
+  Future<List<SpendingModel>> fetchSpending() async {
+    await initDB();
+
+    String query = "SELECT *  FROM $spendingTable;";
+
+    List<Map<String, dynamic>> res = await db?.rawQuery(query) ?? [];
+
+    return res
+        .map(
+          (e) => SpendingModel.formMap(data: e),
+        )
+        .toList();
+  }
+
+  Future<CategoryModel> fetchSingleCategory({required int id}) async {
+    await initDB();
+
+    String query = "SELECT * FROM $categoryTable WHERE category_id = $id;";
+
+    List<Map<String, dynamic>> res = await db?.rawQuery(query) ?? [];
+
+    return CategoryModel(
+        id: res[0]['category_id'],
+        name: res[0][categoryName],
+        image: res[0][categoryImage],
+        index: res[0][categoryImageIndex]);
+  }
+
   Future<List<CategoryModel>> liveSearchCategory({
     required String search,
   }) async {

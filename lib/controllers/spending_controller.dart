@@ -29,6 +29,12 @@ class SpendingController extends GetxController {
     update();
   }
 
+  void assignDefaultValue() {
+    mode = dateTime = spendingIndex = null;
+
+    update();
+  }
+
   Future<void> addSpendingData({required SpendingModel model}) async {
     int? res = await DBHelper.dbHelper.insertSpending(model: model);
 

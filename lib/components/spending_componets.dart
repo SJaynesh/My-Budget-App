@@ -213,6 +213,9 @@ class SpendingComponents extends StatelessWidget {
                         categoryId: controller.categoryId,
                       ),
                     );
+                    descController.clear();
+                    amountController.clear();
+                    controller.assignDefaultValue();
                   } else {
                     Get.snackbar(
                       "Required",
